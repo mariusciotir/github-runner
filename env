@@ -1,4 +1,4 @@
+RUNNER_VERSION=2.304.0
 USER=mariusciotir
 REPO=terragrunt-oci
 RUNNER_NAME=terragrunt-runner
-TOKEN=$GH_TOKEN

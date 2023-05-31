@@ -1,27 +1,27 @@
+#does not work with Alpine
 FROM docker.io/library/ubuntu:mantic
 
-RUN apt-get update -y && apt-get upgrade -y && useradd -m docker && \
-    apt-get install -y --no-install-recommends curl ca-certificates sudo && apt-get clean
+#add docker user and 
+RUN apt-get update -y && apt-get upgrade -y && useradd -m ghrunner && \
+    apt-get install -y --no-install-recommends curl ca-certificates && apt-get clean
 
 RUN mkdir -p ./actions-runner && cd ./actions-runner
 
-#COPY  actions-runner/  /actions-runner
-ENV $PATH=/usr/bin/:
 WORKDIR /actions-runner
 
-RUN curl -O -L https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-linux-x64-2.304.0.tar.gz \
-    && tar xvzf ./actions-runner-linux-x64-2.304.0.tar.gz
+# get the required version and untar 
+RUN curl -O -L https://github.com/actions/runner/releases/download/v$RUNNER_VERSION/actions-runner-linux-x64-$RUNNER_VERSION.tar.gz \
+    && tar xvzf ./actions-runner-linux-x64-$RUNNER_VERSION.tar.gz
 
-
-
-COPY start.sh /actions-runner/
-RUN chmod +x config.sh run.sh env.sh start.sh
+# add start to container
+COPY ./scripts/start.sh /actions-runner/
+RUN chmod +x start.sh
 
 
 RUN ./bin/installdependencies.sh
-RUN chown -R docker /actions-runner
 
-USER docker
+# 
+USER ghrunner
 
 # set the entrypoint to start.sh to run both config.sh and run.sh
 ENTRYPOINT ["./start.sh"]
