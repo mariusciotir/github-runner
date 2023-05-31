@@ -1,0 +1,4 @@
+USER=mariusciotir
+REPO=terragrunt-oci
+RUNNER_NAME=terragrunt-runner
+TOKEN=$GH_TOKEN
