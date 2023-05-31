@@ -1,0 +1,3 @@
+1. cleanup image
+2. cleanup code
+3. ... 
